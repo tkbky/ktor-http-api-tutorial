@@ -17,5 +17,7 @@ object CustomerRepository {
 
     fun delete(id: Long) = store.remove(id)
 
+    fun deleteAll() = store.clear()
+
     fun isExists(id: Long) = store.containsKey(id)
 }
