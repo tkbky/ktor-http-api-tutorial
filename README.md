@@ -23,3 +23,13 @@ curl -i -X POST -H "Content-Type: application/json" -d '{"username":"admin","pas
 # Access JWT authenticated endpoint
 curl -i -H "Authorization: Bearer <jwt-token>" http://localhost:8080/auth/jwt
 ```
+
+## Docker
+
+```sh
+./gradlew installDist
+
+docker build -t ktor-http-api-tutorial .
+
+docker run -p 8080:8080 ktor-http-api-tutorial
+```
