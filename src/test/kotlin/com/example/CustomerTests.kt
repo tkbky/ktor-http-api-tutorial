@@ -18,7 +18,7 @@ class CustomerTests {
 
     @Test
     fun `Get customer returns empty`() {
-        withTestApplication({ configureRouting() }) {
+        withTestApplication({ configureRouting(environment) }) {
             handleRequest(HttpMethod.Get, "/customer").apply {
                 assertEquals(HttpStatusCode.NotFound, response.status())
                 assertEquals("No customers found", response.content)
@@ -37,7 +37,7 @@ class CustomerTests {
             )
         )
         withTestApplication({
-            configureRouting()
+            configureRouting(environment)
             configureSerialization()
         }) {
             handleRequest(HttpMethod.Get, "/customer").apply {
@@ -52,7 +52,7 @@ class CustomerTests {
     @Test
     fun `Create customer`() {
         withTestApplication({
-            configureRouting()
+            configureRouting(environment)
             configureSerialization()
         }) {
             handleRequest(HttpMethod.Post, "/customer") {

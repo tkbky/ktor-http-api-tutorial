@@ -1,26 +1,15 @@
 package com.example
 
-import io.ktor.auth.*
-import io.ktor.util.*
-import io.ktor.routing.*
+import com.example.plugins.configureRouting
 import io.ktor.http.*
-import io.ktor.features.*
-import io.ktor.http.content.*
-import org.slf4j.event.*
-import io.micrometer.prometheus.*
-import io.ktor.metrics.micrometer.*
-import io.ktor.serialization.*
-import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
-import kotlin.test.*
 import io.ktor.server.testing.*
-import com.example.plugins.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class ApplicationTest {
     @Test
     fun testRoot() {
-        withTestApplication({ configureRouting() }) {
+        withTestApplication({ configureRouting(environment) }) {
             handleRequest(HttpMethod.Get, "/").apply {
                 assertEquals(HttpStatusCode.OK, response.status())
                 assertEquals("Hello World!", response.content)
