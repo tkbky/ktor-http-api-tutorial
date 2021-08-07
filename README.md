@@ -13,4 +13,13 @@ curl -i http://localhost:8080/customer
 curl -i http://localhost:8080/customer/1
 # Delete a customer
 curl -i -X DELETE http://localhost:8080/customer/1
+
+# Basic auth
+curl -i -u admin:admin http://localhost:8080/auth/basic
+
+# JWT auth
+# Get JWT token
+curl -i -X POST -H "Content-Type: application/json" -d '{"username":"admin","password":"admin"}' http://localhost:8080/auth/jwt-login
+# Access JWT authenticated endpoint
+curl -i -H "Authorization: Bearer <jwt-token>" http://localhost:8080/auth/jwt
 ```
