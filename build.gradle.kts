@@ -6,7 +6,7 @@ val prometeus_version : String by project
 plugins {
     application
     kotlin("jvm") version "1.5.21"
-                id("org.jetbrains.kotlin.plugin.serialization") version "1.5.21"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.21"
 }
 
 group = "com.example"
