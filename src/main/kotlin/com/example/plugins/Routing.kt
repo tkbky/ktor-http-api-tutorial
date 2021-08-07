@@ -2,6 +2,7 @@ package com.example.plugins
 
 import com.example.routes.registerCustomerRoutes
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.response.*
