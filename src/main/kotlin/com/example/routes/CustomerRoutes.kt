@@ -1,10 +1,8 @@
 package com.example.routes
 
 import com.example.models.Customer
-import com.example.plugins.AuthProvider
 import com.example.repositories.CustomerRepository
 import io.ktor.application.*
-import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -12,15 +10,6 @@ import io.ktor.routing.*
 
 fun Route.customerRouting() {
     route("/customer") {
-        authenticate(AuthProvider.AUTH_BASIC.name) {
-            get("hi") {
-                val principal = call.principal<UserIdPrincipal>()
-                principal?.let {
-                    call.respondText("Hi ${it.name}!")
-                } ?: call.respondText("Hey there!")
-            }
-        }
-
         get {
             val customers = CustomerRepository.all()
             if (customers.isEmpty()) {
