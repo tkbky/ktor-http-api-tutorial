@@ -8,14 +8,14 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-fun Route.customerRouting() {
+fun Route.customerRouting(customerRepository: CustomerRepository) {
     route("/customer") {
         get {
-            val customers = CustomerRepository.all()
+            val customers = customerRepository.all()
             if (customers.isEmpty()) {
                 call.respondText("No customers found", status = HttpStatusCode.NotFound)
             } else {
-                call.respond(CustomerRepository.all())
+                call.respond(customerRepository.all())
             }
         }
 
@@ -25,7 +25,7 @@ fun Route.customerRouting() {
                 status = HttpStatusCode.BadRequest
             )
             val customer =
-                CustomerRepository.findById(id) ?: return@get call.respondText(
+                customerRepository.findById(id) ?: return@get call.respondText(
                     "No customer with id $id",
                     status = HttpStatusCode.NotFound
                 )
@@ -34,14 +34,14 @@ fun Route.customerRouting() {
 
         post {
             val customer = call.receive<Customer>()
-            CustomerRepository.save(customer)
+            customerRepository.save(customer)
             call.respondText("Customer stored correctly", status = HttpStatusCode.Created)
         }
 
         delete("{id}") {
             val id = call.parameters["id"]?.toLongOrNull() ?: return@delete call.respond(HttpStatusCode.BadRequest)
-            if (CustomerRepository.isExists(id)) {
-                CustomerRepository.delete(id)
+            if (customerRepository.isExists(id)) {
+                customerRepository.delete(id)
                 call.respondText("Customer removed correctly", status = HttpStatusCode.Accepted)
             } else {
                 call.respondText("Not Found", status = HttpStatusCode.NotFound)
@@ -50,8 +50,8 @@ fun Route.customerRouting() {
     }
 }
 
-fun Application.registerCustomerRoutes() {
+fun Application.registerCustomerRoutes(customerRepository: CustomerRepository) {
     routing {
-        customerRouting()
+        customerRouting(customerRepository)
     }
 }
