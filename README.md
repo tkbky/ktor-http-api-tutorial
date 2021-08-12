@@ -69,3 +69,14 @@ Run auto format when there are violations.
 ```
 
 Refer to [this doc](https://github.com/jlleitschuh/ktlint-gradle#main-tasks) more ktlint gradle tasks 
+
+## Monitoring
+
+We use [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/).
+
+```sh
+docker-compose up -d grafana
+open http://localhost:3000
+```
+
+Refer to [this post](https://medium.com/@math21/how-to-monitor-a-ktor-server-using-grafana-bab54a9ac0dc) on how to setup a Grafana dashboard.
