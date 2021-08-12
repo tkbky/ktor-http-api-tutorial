@@ -3,11 +3,15 @@ package com.example.plugins
 import com.example.repositories.CustomerRepository
 import com.example.routes.registerAuthRoutes
 import com.example.routes.registerCustomerRoutes
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.http.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.StatusPages
+import io.ktor.http.HttpStatusCode
+import io.ktor.response.respond
+import io.ktor.response.respondText
+import io.ktor.routing.get
+import io.ktor.routing.routing
 import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
@@ -28,7 +32,6 @@ fun Application.configureRouting() {
             exception<AuthorizationException> { cause ->
                 call.respond(HttpStatusCode.Forbidden)
             }
-
         }
     }
 }

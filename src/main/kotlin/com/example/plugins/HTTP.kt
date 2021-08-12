@@ -1,11 +1,20 @@
 package com.example.plugins
 
-import io.ktor.features.*
-import io.ktor.http.content.*
-import io.ktor.http.*
-import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
+import io.ktor.application.Application
+import io.ktor.application.install
+import io.ktor.features.CORS
+import io.ktor.features.CachingHeaders
+import io.ktor.features.Compression
+import io.ktor.features.ConditionalHeaders
+import io.ktor.features.DefaultHeaders
+import io.ktor.features.deflate
+import io.ktor.features.gzip
+import io.ktor.features.minimumSize
+import io.ktor.http.CacheControl
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
+import io.ktor.http.content.CachingOptions
 
 fun Application.configureHTTP() {
     install(CachingHeaders) {
@@ -39,5 +48,4 @@ fun Application.configureHTTP() {
     install(DefaultHeaders) {
         header("X-Engine", "Ktor") // will send this header with each response
     }
-
 }

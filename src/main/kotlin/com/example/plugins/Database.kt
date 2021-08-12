@@ -1,6 +1,6 @@
 package com.example.plugins
 
-import io.ktor.application.*
+import io.ktor.application.Application
 import org.jetbrains.exposed.sql.Database
 
 object DatabaseConfig {

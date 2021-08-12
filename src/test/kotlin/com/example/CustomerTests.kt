@@ -2,10 +2,15 @@ package com.example
 
 import com.example.models.Customer
 import com.example.repositories.CustomerRepository
-import io.ktor.application.*
-import io.ktor.config.*
-import io.ktor.http.*
-import io.ktor.server.testing.*
+import io.ktor.application.Application
+import io.ktor.config.MapApplicationConfig
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.testing.handleRequest
+import io.ktor.server.testing.setBody
+import io.ktor.server.testing.withTestApplication
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Before
@@ -64,9 +69,12 @@ class CustomerTests : KoinTest {
             )
             handleRequest(HttpMethod.Get, "/customer").apply {
                 assertEquals(HttpStatusCode.OK, response.status())
-                assertEquals("""
+                assertEquals(
+                    """
                     [{"id":1,"firstName":"test.firstname","lastName":"test.lastname","email":"test@example.com"}]
-                """.trimIndent(), response.content)
+                    """.trimIndent(),
+                    response.content
+                )
             }
         }
     }

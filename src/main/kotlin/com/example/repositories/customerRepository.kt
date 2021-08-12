@@ -2,7 +2,15 @@ package com.example.repositories
 
 import com.example.models.Customer
 import org.jetbrains.exposed.dao.id.LongIdTable
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.deleteAll
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.exists
+import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
 internal object Customers : LongIdTable() {
@@ -53,7 +61,7 @@ class CustomerRepository {
         Customers.slice(exists(Customers.select { Customers.id eq id })).selectAll().none()
     }
 }
-//object CustomerRepository {
+// object CustomerRepository {
 //
 //    private val store = mutableMapOf<Long, Customer>()
 //
@@ -71,4 +79,4 @@ class CustomerRepository {
 //    fun deleteAll() = store.clear()
 //
 //    fun isExists(id: Long) = store.containsKey(id)
-//}
+// }

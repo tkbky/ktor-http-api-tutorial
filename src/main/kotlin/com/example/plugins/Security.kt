@@ -2,10 +2,14 @@ package com.example.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.auth.jwt.*
-import io.ktor.util.*
+import io.ktor.application.Application
+import io.ktor.application.install
+import io.ktor.auth.Authentication
+import io.ktor.auth.UserHashedTableAuth
+import io.ktor.auth.basic
+import io.ktor.auth.jwt.JWTPrincipal
+import io.ktor.auth.jwt.jwt
+import io.ktor.util.getDigestFunction
 
 enum class AuthProvider {
     AUTH_BASIC,
@@ -34,11 +38,13 @@ fun Application.configureSecurity() {
 
         jwt(AuthProvider.AUTH_JWT.name) {
             realm = jwtRealm
-            verifier(JWT
-                .require(Algorithm.HMAC256(secret))
-                .withAudience(audience)
-                .withIssuer(issuer)
-                .build())
+            verifier(
+                JWT
+                    .require(Algorithm.HMAC256(secret))
+                    .withAudience(audience)
+                    .withIssuer(issuer)
+                    .build()
+            )
             validate { jwtCredential ->
                 if (jwtCredential.payload.getClaim("username").asString() != "") {
                     JWTPrincipal(jwtCredential.payload)
