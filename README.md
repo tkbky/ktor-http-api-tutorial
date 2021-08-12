@@ -33,3 +33,20 @@ docker build -t ktor-http-api-tutorial .
 
 docker run -p 8080:8080 ktor-http-api-tutorial
 ```
+
+## Database
+
+```sh
+psql postgres
+
+create role root login password 'root'
+ 
+# Test connection
+psql -U root -W postgres
+postgres=> \q
+
+# Create database for development & test
+psql postgres
+create database ktor_http_api_tutorial_development;
+create database ktor_http_api_tutorial_test;
+```
