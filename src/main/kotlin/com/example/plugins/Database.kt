@@ -1,5 +1,7 @@
 package com.example.plugins
 
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
 import io.ktor.application.Application
 import org.jetbrains.exposed.sql.Database
 
@@ -11,12 +13,15 @@ object DatabaseConfig {
         username: String,
         password: String,
     ) {
-        Database.connect(
-            url = "jdbc:postgresql://$host:$port/$database",
-            driver = "org.postgresql.Driver",
-            user = username,
-            password = password
-        )
+        val config = HikariConfig().apply {
+            jdbcUrl = "jdbc:postgresql://$host:$port/$database"
+            driverClassName = "org.postgresql.Driver"
+            this.username = username
+            this.password = password
+            maximumPoolSize = 10
+        }
+        val dataSource = HikariDataSource(config)
+        Database.connect(dataSource)
     }
 }
 
