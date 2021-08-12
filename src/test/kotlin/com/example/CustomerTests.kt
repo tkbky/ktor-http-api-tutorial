@@ -1,24 +1,50 @@
 package com.example
 
 import com.example.models.Customer
-import com.example.plugins.configureRouting
-import com.example.plugins.configureSerialization
 import com.example.repositories.CustomerRepository
+import io.ktor.application.*
+import io.ktor.config.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
+import org.jetbrains.exposed.sql.transactions.TransactionManager
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Before
 import org.junit.Test
+import org.koin.test.KoinTest
+import org.koin.test.inject
 import kotlin.test.assertEquals
 
-class CustomerTests {
+class CustomerTests : KoinTest {
+    private val customerRepository: CustomerRepository by inject()
+
+    private fun Application.moduleFunction() {
+        (environment.config as MapApplicationConfig).apply {
+            put("ktor.jwt.secret", "secret")
+            put("ktor.jwt.issuer", "http://0.0.0.0:8080/")
+            put("ktor.jwt.audience", "http://0.0.0.0:8080/hello")
+            put("ktor.jwt.realm", "Access to 'hello'")
+            put("ktor.db.host", "localhost")
+            put("ktor.db.port", "5432")
+            put("ktor.db.database", "ktor_http_api_tutorial_test")
+            put("ktor.db.username", "root")
+            put("ktor.db.password", "root")
+        }
+        module(testing = true)
+    }
+
     @Before
     fun setup() {
-        CustomerRepository.deleteAll()
+        withTestApplication({ moduleFunction() }) {
+            transaction {
+                val conn = TransactionManager.current().connection
+                conn.prepareStatement("TRUNCATE TABLE customers RESTART IDENTITY", returnKeys = false).executeUpdate()
+            }
+        }
     }
 
     @Test
     fun `Get customer returns empty`() {
-        withTestApplication({ configureRouting() }) {
+        withTestApplication({ moduleFunction() }) {
             handleRequest(HttpMethod.Get, "/customer").apply {
                 assertEquals(HttpStatusCode.NotFound, response.status())
                 assertEquals("No customers found", response.content)
@@ -28,18 +54,14 @@ class CustomerTests {
 
     @Test
     fun `Get customer returns all customers`() {
-        CustomerRepository.save(
-            Customer(
-                id = 1,
-                email = "test@example.com",
-                firstName = "test.firstname",
-                lastName = "test.lastname"
+        withTestApplication({ moduleFunction() }) {
+            customerRepository.save(
+                Customer(
+                    email = "test@example.com",
+                    firstName = "test.firstname",
+                    lastName = "test.lastname"
+                )
             )
-        )
-        withTestApplication({
-            configureRouting()
-            configureSerialization()
-        }) {
             handleRequest(HttpMethod.Get, "/customer").apply {
                 assertEquals(HttpStatusCode.OK, response.status())
                 assertEquals("""
@@ -51,10 +73,7 @@ class CustomerTests {
 
     @Test
     fun `Create customer`() {
-        withTestApplication({
-            configureRouting()
-            configureSerialization()
-        }) {
+        withTestApplication({ moduleFunction() }) {
             handleRequest(HttpMethod.Post, "/customer") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody("{\"id\":1,\"firstName\":\"test.firstname\",\"lastName\":\"test.lastname\",\"email\":\"test@example.com\"}")
