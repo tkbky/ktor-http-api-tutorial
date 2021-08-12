@@ -42,7 +42,7 @@ docker run -p 8080:8080 ktor-http-api-tutorial
 psql postgres
 
 create role root login password 'root'
- 
+
 # Test connection
 psql -U root -W postgres
 postgres=> \q
@@ -68,7 +68,7 @@ Run auto format when there are violations.
 ./gradlew ktlintFormat
 ```
 
-Refer to [this doc](https://github.com/jlleitschuh/ktlint-gradle#main-tasks) more ktlint gradle tasks 
+Refer to [this doc](https://github.com/jlleitschuh/ktlint-gradle#main-tasks) more ktlint gradle tasks
 
 ## Monitoring
 
