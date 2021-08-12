@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:9.5
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: ktor_http_api_tutorial_development
+  backend:
+    build: .
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DB_NAME: ktor_http_api_tutorial_development
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      JWT_SECRET: secret
+      JWT_ISSUER: http://0.0.0.0:8080/
+      JWT_AUDIENCE: http://0.0.0.0:8080/hello
+      JWT_REALM: Hi there!
+    ports:
+      - "8080:8080"
+
