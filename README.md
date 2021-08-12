@@ -24,6 +24,8 @@ curl -i -X POST -H "Content-Type: application/json" -d '{"username":"admin","pas
 curl -i -H "Authorization: Bearer <jwt-token>" http://localhost:8080/auth/jwt
 ```
 
+OR use [dot-http](https://github.com/bayne/dot-http) or IntelliJ Ultimate edition to run the .http files.
+
 ## Docker
 
 ```sh
