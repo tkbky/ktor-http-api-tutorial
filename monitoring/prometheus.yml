@@ -1,0 +1,6 @@
+scrape_configs:
+  - job_name: "ktor-http-api-tutorial"
+    metrics_path: /metrics-micrometer
+    scrape_interval: 5s
+    static_configs:
+      - targets: [ "backend:8080" ]
