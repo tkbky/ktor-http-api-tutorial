@@ -50,3 +50,20 @@ psql postgres
 create database ktor_http_api_tutorial_development;
 create database ktor_http_api_tutorial_test;
 ```
+
+## Lint
+
+We follow standard rules defined by [ktlint](http://ktlint.github.io/) and setup [ktlint-gradle](https://github.com/jlleitschuh/ktlint-gradle) for that.
+
+Make sure to setup a pre-commit hook to do a ktlint check.
+```sh
+./gradlew addKtlintCheckGitPreCommitHook
+```
+
+Run auto format when there are violations.
+
+```sh
+./gradlew ktlintFormat
+```
+
+Refer to [this doc](https://github.com/jlleitschuh/ktlint-gradle#main-tasks) more ktlint gradle tasks 
