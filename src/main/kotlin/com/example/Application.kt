@@ -9,15 +9,6 @@ import com.example.plugins.configureSecurity
 import com.example.plugins.configureSerialization
 import io.ktor.application.Application
 
-// fun main() {
-//    embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
-//        configureSecurity()
-//        configureRouting()
-//        configureHTTP()
-//        configureMonitoring()
-//        configureSerialization()
-//    }.start(wait = true)
-// }
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module(testing: Boolean = false) {

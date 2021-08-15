@@ -61,22 +61,3 @@ class CustomerRepository {
         Customers.slice(exists(Customers.select { Customers.id eq id })).selectAll().none()
     }
 }
-// object CustomerRepository {
-//
-//    private val store = mutableMapOf<Long, Customer>()
-//
-//    fun all(): List<Customer> = store.values.toList()
-//
-//    fun save(customer: Customer): Customer {
-//        store[customer.id] = customer
-//        return customer
-//    }
-//
-//    fun findById(id: Long): Customer? = store[id]
-//
-//    fun delete(id: Long) = store.remove(id)
-//
-//    fun deleteAll() = store.clear()
-//
-//    fun isExists(id: Long) = store.containsKey(id)
-// }
